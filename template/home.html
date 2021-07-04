@@ -1,0 +1,139 @@
+{% extends 'index.html' %}
+{% block content %}
+<style>
+    #C1{
+        color:rgb(33, 69, 74);
+        font-size: 25px;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+    .C2{
+        font-weight: bold;
+    }
+    .btnn:hover{
+        text-decoration: none;
+    }
+</style>
+    <form method="post" action="get_data" onsubmit="f1();">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="symbol" class="text-primary" ><h4>Enter Stock symbol :</h4></label>
+            <input type="text" class="form-control" style="height:60px; font-size: 20px; color:rgb(30, 85, 67)" name="name" id="symbol" aria-describedby="pressEnter">
+            <h6 id="pressEnter" class="form-text text-muted float-right">Press enter to search</h6>
+          </div>
+        <input type="submit" style="height: 0px; width: 0px; border: none; padding: 0px;" hidefocus="true" />
+    </form>
+    <center style="display: none; padding-top: 100px; padding-bottom:100px" id="show">
+        <div class="spinner-grow text-muted "></div>
+        <div class="spinner-grow text-muted "></div>
+        <div class="spinner-grow text-muted "></div>
+    </center>
+    {% if error %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{{error}}</strong> 
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endif %}
+    {% if longname %}
+    <div class="text-center" style="font-size: 65px; font-weight: bold;color: rgb(65, 139, 136)"><a class="btnn" onclick="company();" >{{ longname }} ({{ s }})</a></div><br><br>
+    <div id="C1" style="display: none;">
+        <div class="row pb-2">
+            <div class="col-2 C2">Sector</div>
+            <div class="col-1">:</div>
+            <div class="col-9">{{ sector }}</div>
+        </div>
+        <div class="row pb-2">
+            <div class="col-2 C2">Summary</div>
+            <div class="col-1">:</div>
+            <div class="col-9">{{ Summary }}</div>
+        </div>
+        <div class="row pb-2">
+            <div class="col-2 C2">Website</div>
+            <div class="col-1">:</div>
+            <div class="col-9"><a href='{{ website }}'>{{ website }}</a></div>
+        </div>
+        <div class="row pb-2">
+            <div class="col-2 C2">City</div>
+            <div class="col-1">:</div>
+            <div class="col-9">{{ city }}</div>
+        </div>
+        <div class="row pb-2">
+            <div class="col-2 C2">State</div>
+            <div class="col-1">:</div>
+            <div class="col-9">{{ state }}</div>
+        </div>
+        <div class="row pb-2">
+            <div class="col-2 C2">Country</div>
+            <div class="col-1">:</div>
+            <div class="col-9">{{ country }}</div>
+        </div>
+        <div class="row pb-2">
+            <div class="col-2 C2">Ph. No.</div>
+            <div class="col-1">:</div>
+            <div class="col-9">{{ phone }}</div>
+        </div><br>
+        <button type="button" onclick="f2();" id="back" class="btn btn-primary">Back</button>
+        <br><br> 
+    </div>
+    <div id="C2" style="display: block;">
+        <div class="row">
+            <div class="col-6">
+                <span style="font-size:55px;font-weight: bold;color:  rgb(63, 95, 95);">
+                    {{ cur_price }}
+                </span>
+                {% if diff1 %}
+                <span style="font-weight: bold; font-size:30px; color:green;">
+                    +{{ diff }}(+{{per}}%)
+                </span>
+                {% else %}
+                <span style="font-weight: bold; font-size:30px; color: red ;">
+                    {{ diff }}({{per}}%)
+                </span>
+                {% endif %}<br>
+                <div style="font-size:18px; color: rgb(112, 112, 112);">Currency in {{ currency }}</div><br>
+                <div style="font-size:18px; font-weight: bold; color: rgb(34, 68, 64);">{{ cur_date}}</div><br>
+            </div>
+            <div class="col-6 p-2 pt-3">
+                <div class="row">
+                    <span style="font-size:18px; font-weight:600; color: rgb(97, 97, 97)" class="col-4">Market open :</span>
+                    <span style="font-size:23px; font-weight: bold; color:rgb(78, 78, 78)" class="col-2">{{ open }}</span>
+                </div>
+                <div class="row">
+                    <span style="font-size:18px; font-weight:600; color: rgb(97, 97, 97)" class="col-4">Previous close :</span>
+                    <span style="font-size:23px; font-weight: bold; color:rgb(78, 78, 78)" class="col-2">{{ close }}</span>
+                </div>
+                <div class="row">
+                    <span style="font-size:18px; font-weight:600; color: rgb(97, 97, 97)" class="col-4">Day high :</span>
+                    <span style="font-size:23px; font-weight: bold; color:rgb(78, 78, 78)" class="col-2">{{ day_high }}</span>
+                </div>
+                <div class="row">
+                    <span style="font-size:18px; font-weight:600; color: rgb(97, 97, 97)" class="col-4">Day low :</span>
+                    <span style="font-size:23px; font-weight: bold; color:rgb(78, 78, 78)" class="col-2">{{ day_low }}</span>
+                </div>
+            </div>
+        </div><br>
+        {% autoescape off %}
+        {{ plot_div1 }}
+        {{ plot_div2 }}
+        {% endautoescape %} 
+        {% endif %}
+    </div>
+    
+    <script>
+        function f1()
+        {
+            document.getElementById("show").style.display = 'block';
+        }
+        function company()
+        {
+            document.getElementById("C1").style.display = 'block';
+            document.getElementById("C2").style.display = 'none';
+        }
+        function f2()
+        {
+            document.getElementById("C1").style.display = 'none';
+            document.getElementById("C2").style.display = 'block';
+        }
+    </script>
+{% endblock %}

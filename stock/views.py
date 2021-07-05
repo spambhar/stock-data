@@ -2,13 +2,11 @@ from django.shortcuts import render
 from plotly.offline import plot
 import yfinance as yf
 import plotly.graph_objs as go
-from pandas_datareader.data import DataReader
 from datetime import datetime
 import requests
 import plotly.express as px
 import numpy as np
 import pandas as pd
-from pytz import timezone
 
 
 def home(request):

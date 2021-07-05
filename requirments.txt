@@ -12,6 +12,7 @@ idna
 lxml    
 multitasking   
 numpy  
+pandas_datareader
 pandas
 parse
 pip

@@ -2,11 +2,13 @@ from django.shortcuts import render
 from plotly.offline import plot
 import yfinance as yf
 import plotly.graph_objs as go
+from pandas_datareader.data import DataReader
 from datetime import datetime
 import requests
 import plotly.express as px
 import numpy as np
 import pandas as pd
+from pytz import timezone
 
 
 def home(request):
@@ -14,11 +16,6 @@ def home(request):
 
 def company(request):
     return render(request, 'company.html')
-
-def zoom(layout, x_range):
-    print('yaxis updated')
-    in_view = df.loc[figure.layout.xaxis.range[0]:figure.layout.xaxis.range[1]]
-    figure.layout.yaxis.range = [in_view.High.min() - 10, in_view.High.max() + 10]
 
 def get_data(request):
     try:
@@ -28,12 +25,12 @@ def get_data(request):
         com = yf.Ticker(s)
         x = com.info
         data = yf.download(tickers=s, period='1d', interval='1m')
-        print(com.info)   
+        # print(com.info)   
         timezon = com.info['exchangeTimezoneName']
 
         row = data.tail(1).reset_index()
         df = pd.DataFrame(row)
-        print(df)
+        # print(df)
         dt = df.iat[0,0]
 
         price = "{:.2f}".format(df.iat[0,4])
@@ -111,7 +108,7 @@ def get_data(request):
         #2
         data = yf.download(tickers=s, period='max',interval='1d')
         ss = data[['Adj Close']]
-        print(ss)
+        # print(ss)
         data = ss.reset_index()
         data.columns = [0,1]
         x_data = data[0]
@@ -157,8 +154,6 @@ def get_data(request):
                 type="date"
             )
         )
-        # fig.update_yaxes(showgrid=False)
-        # fig.layout.on_change(zoom, 'xaxis.range')
         plot_div2 = plot(fig,output_type='div')
 
         sector = 'None'

@@ -37,3 +37,4 @@ wheel
 yahoo-fin
 yfinance
 whitenoise
+django_heroku

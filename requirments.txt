@@ -36,3 +36,4 @@ websockets
 wheel
 yahoo-fin
 yfinance
+whitenoise

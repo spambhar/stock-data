@@ -39,3 +39,4 @@ yahoo-fin
 yfinance
 whitenoise
 django_heroku
+gunicorn

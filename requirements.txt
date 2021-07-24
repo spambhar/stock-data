@@ -1,6 +1,5 @@
 appdirs   
-asgiref    
-beautifulsoup4    
+asgiref   
 bs4   
 certifi
 chardet  
@@ -10,8 +9,7 @@ fake-useragent
 feedparser   
 idna 
 lxml    
-multitasking   
-numpy  
+multitasking  
 pandas_datareader
 pandas
 parse
@@ -22,8 +20,6 @@ pyppeteer
 pyquery
 python-dateutil
 pytz
-requests
-requests-html
 setuptools
 sgmllib3k
 six
@@ -35,7 +31,6 @@ urllib3
 w3lib
 websockets
 wheel
-yahoo-fin
 yfinance
 whitenoise
 django_heroku

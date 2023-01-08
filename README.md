@@ -1,6 +1,6 @@
 # Stock-data - Django
 
-Website link : <a>https://stockdata2.herokuapp.com/</a>
+<!-- Website link : <a>https://stockdata2.herokuapp.com/</a> -->
 
 ## Contributors :
   <a href="https://www.github.com/Brijesh-007">Brijesh Bhut</a> : https://github.com/Brijesh-007/stock-data<br>
